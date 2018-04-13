@@ -1,0 +1,113 @@
+body {
+    margin: 25px;
+}
+
+.tooltip {
+    font-weight: bold;
+    padding: 0.5rem;
+    border: 1px solid silver;
+    color: #222;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px 0px #a6a6a6;
+    opacity: 0.9;
+    position: absolute;
+    font-size: 1.5rem;
+}
+
+.hidden {
+    display: none;
+}
+
+#details,
+#initial {
+    margin-top: 2rem;
+}
+
+table {
+    margin-bottom: 0;
+}
+
+td,
+th {
+    padding: 2px 9px;
+}
+
+.container {
+    width: 100%;
+}
+
+#legend-container,
+#legend-container-mobile {
+    margin-top: 2rem;
+}
+
+p.legend-mobile {
+    text-align: center;
+    margin-bottom: .8rem;
+}
+
+.footer {
+    border-top: 1px solid silver;
+    color: #888888;
+    font-size: 1.25rem;
+    text-align: center;
+    margin-top: 1rem;
+    padding: 0.5rem;
+}
+
+#close-details {
+    color: #FA5858;
+    text-decoration: none;
+    font-size: 1.8em;
+    text-align: right;
+    line-height: 4.5rem;
+}
+
+#close-details:hover {
+    color: red;
+}
+
+#map {
+    font-size: 0;
+    /* to prevent margin at bottom of map container */
+    border: 1px solid rgba(0, 0, 0, .1);
+}
+
+g.features {
+    stroke: #d8d8d8;
+    stroke-width: 0.5;
+}
+
+g.features path:hover {
+    opacity: 0.5;
+}
+
+h3.state-name {
+    text-align: center;
+}
+
+ul {
+    margin-left: 2em;
+}
+
+@media only screen and (max-width: 725px) {
+    #legend-container {
+        display: none;
+    }
+    .tooltip {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 726px) {
+    #legend-container-mobile {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    h1#map-title {
+        font-size: 3.3rem;
+    }
+}
