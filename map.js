@@ -52,8 +52,8 @@ var dataById = d3.map();
 
 // Define linear scale for output
 // status: 0 illegal, 1 medical, 2 recreational, 3 ballot pass, 4 ballot fail
-var color = d3.scale.linear()
-    .range(["rgb(213,222,217)", "rgb(161,217,155)", "rgb(49,163,84)", "rgb(0,0,0)"]);
+// var color = d3.scale.linear()
+//     .range(["rgb(213,222,217)", "rgb(161,217,155)", "rgb(49,163,84)", "rgb(0,0,0)"]);
 
 d3.json('us-geojson-simplify.json', function(error, features) {
     // console.log(features.features);
@@ -78,7 +78,18 @@ d3.json('us-geojson-simplify.json', function(error, features) {
             })
             .map(data);
 
-        color.domain([0, 1, 2, 3]); // setting the range of the input data
+        // Set domain from the true max and min of the data
+        var color = d3.scale.linear()
+            .domain([0, 50, 100])
+            // .domain([
+            //     d3.min(dataById, function(d) { return +d.properties.pct_change_1974_to_2012; }),
+            //     d3.max(dataById, function(d) { return +d.properties.pct_change_1974_to_2012; })
+            // ])
+            .range(["#a50026", "#d73027", "#f46d43", "#fdae61", "#fee08b", "#ffffbf", "#d9ef8b", "#a6d96a", "#66bd63", "#1a9850", "#006837"]);
+        // .range(['blue','lightgray','red']);
+        // .range(colorbrewer.PuOr[3]);
+
+        // color.domain([0, 1, 2, 3]); // setting the range of the input data
 
         // We add the features to the <g> element created before.
         // D3 wants us to select the (non-existing) path objects first ...

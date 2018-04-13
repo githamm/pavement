@@ -49,10 +49,10 @@
     <script id="template" type="x-tmpl-mustache">
         <h3 class="five columns state-name">{{ city }}</h3>
         <table class="six columns">
-            // <tr>
-            //     <th>Recreational:</th>
-            //     <td>{{ recreational }} </td>
-            // </tr>
+            <tr>
+                <th>Pct. change 1974-2012:</th>
+                <td>{{ pct_change_1974_to_2012 }} </td>
+            </tr>
             // <tr>
             //     <th>Medical:</th>
             //     <td>{{ medical }} </td>
@@ -81,6 +81,7 @@
         <a href="#" id="close-details" class="one column" onclick="hideDetails(); return false;">&#x2716;</a>
     </script>
     <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="//d3js.org/colorbrewer.v1.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
     <script src="map.js"></script>
 </body>
