@@ -1,5 +1,6 @@
 body {
     margin: 25px;
+    background-color: #ddd;
 }
 
 .tooltip {
@@ -68,7 +69,7 @@ p.legend-mobile {
     color: red;
 }
 
-#map {
+#map, #map-2 {
     font-size: 0;
     /* to prevent margin at bottom of map container */
     border: 1px solid rgba(0, 0, 0, .1);

@@ -4,18 +4,27 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>U.S. Marijuana Laws</title>
+    <title>The Paving of America</title>
     <!-- Thanks to this great tutorial: http://data-map-d3.readthedocs.io/en/latest/index.html -->
     <link href="//cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" rel="stylesheet" type="text/css">
     <link href="styles.css" rel="stylesheet" type="text/css">
+    <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  <script>
+window.onload = function() {
+  pavedPct();
+};
+  </script>
 </head>
 
 <body>
     <div class="container">
         <div class="row">
-            <h1 class="twleve columns" id="map-title">U.S. Cannabis Laws</h1>
+            <h1 class="twleve columns" id="map-title">The Paving of America</h1>
         </div>
-        <div class="row" id="legend-container">
+        <!-- <div class="row" id="legend-container">
             <p style="text-align: center"><span style="border-top: 5px solid rgb(49, 163, 84); margin-right: 10px; font-size: 13px;">Recreational marijuana states</span>
                 <span style="border-top: 5px solid rgb(161, 217, 155); margin-right: 10px; font-size: 13px;">Medical marijuana states</span>
                 <span style="border-top: 5px solid #bdbdbd; margin-right: 10px; font-size: 13px;">Marijuana prohibition states</span>
@@ -25,8 +34,12 @@
             <p class="legend-mobile"><span style="border-top: 5px solid rgb(49, 163, 84); ">Recreational marijuana states</span></p>
             <p class="legend-mobile"><span style="border-top: 5px solid rgb(161, 217, 155); ">Medical marijuana states</span></p>
             <p class="legend-mobile"><span style="border-top: 5px solid #bdbdbd; ">Marijuana prohibition states</span></p>
-        </div>
+        </div> -->
         <div class="row" id="map"></div>
+        <div class="row" id="map-2"></div>
+        <!-- <div id="option">
+            <input name="change-button" type="button" value="Update" onclick="pavedPct();$('#map').replaceWith($('#map-2').html());" />
+        </div> -->
         <div id="details" class="hidden row"></div>
         <div class="row" id="initial">
             <div class="five columns">
@@ -47,36 +60,32 @@
     </div>
     <!-- Mustache template, rendered later to show the details of a feature -->
     <script id="template" type="x-tmpl-mustache">
-        <h3 class="five columns state-name">{{ city }}</h3>
+        <h3 class="five columns state-name">{{ NAME10 }}</h3>
         <table class="six columns">
             <tr>
                 <th>Pct. change 1974-2012:</th>
-                <td>{{ pct_change_1974_to_2012 }} </td>
+                <td>{{ pct_change_1974_to_2012 }}% </td>
             </tr>
-            // <tr>
-            //     <th>Medical:</th>
-            //     <td>{{ medical }} </td>
-            // </tr>
-            // <tr>
-            //     <th>CBD law:</th>
-            //     <td>{{ cbd }} </td>
-            // </tr>
-            // <tr>
-            //     <th>Decriminalized:</th>
-            //     <td>{{ decriminalization }} </td>
-            // </tr>
-            // <tr>
-            //     <th>Mandatory sentencing:</th>
-            //     <td>{{ mandatorysentencing }} </td>
-            // </tr>
-            // <tr>
-            //     <th>Notes:</th>
-            //     <td>{{ notes }} </td>
-            // </tr>
-            // <tr>
-            //     <th>Article archive:</th>
-            //     <td><a target="_blank" href="{{ statelink }}">{{ state }} news</a> </td>
-            // </tr>
+            <tr>
+                <th>2012:</th>
+                <td>{{ _2012 }}% </td>
+            </tr>
+            <tr>
+                <th>2002:</th>
+                <td>{{ 2002 }}% </td>
+            </tr>
+            <tr>
+                <th>1992:</th>
+                <td>{{ 1992 }}% </td>
+            </tr>
+            <tr>
+                <th>1982:</th>
+                <td>{{ 1982 }}% </td>
+            </tr>
+            <tr>
+                <th>1974:</th>
+                <td>{{ 1974 }}% </td>
+            </tr>
         </table>
         <a href="#" id="close-details" class="one column" onclick="hideDetails(); return false;">&#x2716;</a>
     </script>

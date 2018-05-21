@@ -65,7 +65,7 @@ d3.json('us-geojson-simplify.json', function(error, features) {
         // We store the data object in the variable which is accessible from
         // outside of this function.
         mapData = data;
-        // console.log(mapData);
+        console.log(mapData);
 
         // This maps the data of the CSV so it can be easily accessed by
         // the ID of the municipality, for example: dataById[2196]
@@ -81,12 +81,13 @@ d3.json('us-geojson-simplify.json', function(error, features) {
         // Set domain from the true max and min of the data
         var color = d3.scale.linear()
             .domain([0, 50, 100])
+            //.domain([0, 25, 50])
             // .domain([
             //     d3.min(dataById, function(d) { return +d.properties.pct_change_1974_to_2012; }),
             //     d3.max(dataById, function(d) { return +d.properties.pct_change_1974_to_2012; })
             // ])
-            .range(["#a50026", "#d73027", "#f46d43", "#fdae61", "#fee08b", "#ffffbf", "#d9ef8b", "#a6d96a", "#66bd63", "#1a9850", "#006837"]);
-        // .range(['blue','lightgray','red']);
+            //  .range(["#a50026", "#d73027", "#f46d43", "#fdae61", "#fee08b", "#ffffbf", "#d9ef8b", "#a6d96a", "#66bd63", "#1a9850", "#006837"]);
+            .range(['blue', 'lightgray', 'red']);
         // .range(colorbrewer.PuOr[3]);
 
         // color.domain([0, 1, 2, 3]); // setting the range of the input data
@@ -127,6 +128,7 @@ d3.json('us-geojson-simplify.json', function(error, features) {
             .style('fill', function(d) {
                 // Get data value
                 var value = dataById[d.properties.uniqid].pct_change_1974_to_2012;
+                //var value = dataById[d.properties.uniqid]._2012;
                 if (value) {
                     //If value exists…
                     return color(value);
@@ -143,7 +145,147 @@ d3.json('us-geojson-simplify.json', function(error, features) {
             .on('click', showDetails)
         //updateMapColors();
     });
+
+
 });
+
+function pavedPct() {
+    var svg = d3.select('#map-2').append('svg')
+    .attr("preserveAspectRatio", "xMidYMid")
+    .attr("viewBox", "0 0 " + width + " " + height);
+
+// We add a <g> element to the SVG element and give it a class to
+// style. We also add a class name for Colorbrewer.
+var mapFeatures = svg.append('g')
+    .attr('class', 'features YlGnBu');
+
+// We add a <div> container for the tooltip, which is hidden by default.
+var tooltip = d3.select("#map")
+    .append("div")
+    .attr("class", "tooltip hidden");
+
+// Define the zoom and attach it to the map
+var zoom = d3.behavior.zoom()
+    .scaleExtent([1, 10])
+    .on('zoom', doZoom);
+
+svg.call(zoom);
+
+// We define a geographical projection
+//     https://github.com/mbostock/d3/wiki/Geo-Projections
+// and set some dummy initial scale. The correct scale, center and
+// translate parameters will be set once the features are loaded.
+var projection = d3.geo.albersUsa()
+    .translate([width / 2, height / 2]) // translate to center of screen
+    .scale([1100]); // scale things down so see entire US
+
+// We prepare a path object and apply the projection to it.
+var path = d3.geo.path()
+    .projection(projection);
+
+// We prepare an object to later have easier access to the data.
+var dataById = d3.map();
+
+// Define linear scale for output
+// status: 0 illegal, 1 medical, 2 recreational, 3 ballot pass, 4 ballot fail
+// var color = d3.scale.linear()
+//     .range(["rgb(213,222,217)", "rgb(161,217,155)", "rgb(49,163,84)", "rgb(0,0,0)"]);
+
+d3.json('us-geojson-simplify.json', function(error, features) {
+    // console.log(features.features);
+
+    // Read the data for the cartogram
+    //d3.csv('data/result.csv', function(data) {
+    d3.json('city-data.json', function(data) {
+
+        // We store the data object in the variable which is accessible from
+        // outside of this function.
+        mapData = data;
+        console.log(mapData);
+
+        // This maps the data of the CSV so it can be easily accessed by
+        // the ID of the municipality, for example: dataById[2196]
+        dataById = d3.nest()
+            .key(function(d) {
+                return d.uniqid;
+            })
+            .rollup(function(d) {
+                return d[0];
+            })
+            .map(data);
+
+        // Set domain from the true max and min of the data
+        var color = d3.scale.linear()
+            //.domain([0, 50, 100])
+            .domain([0, 25, 50])
+            // .domain([
+            //     d3.min(dataById, function(d) { return +d.properties.pct_change_1974_to_2012; }),
+            //     d3.max(dataById, function(d) { return +d.properties.pct_change_1974_to_2012; })
+            // ])
+            //  .range(["#a50026", "#d73027", "#f46d43", "#fdae61", "#fee08b", "#ffffbf", "#d9ef8b", "#a6d96a", "#66bd63", "#1a9850", "#006837"]);
+            .range(['blue', 'lightgray', 'red']);
+        // .range(colorbrewer.PuOr[3]);
+
+        // color.domain([0, 1, 2, 3]); // setting the range of the input data
+
+        // We add the features to the <g> element created before.
+        // D3 wants us to select the (non-existing) path objects first ...
+        mapFeatures.selectAll('path')
+            // ... and then enter the data. For each feature, a <path>
+            // element is added.
+            .data(features.features)
+            .enter()
+            .append('path')
+            // As "d" attribute, we set the path of the feature.
+            .attr('d', path)
+            .style('stroke-width', '.1')
+            // Make path stroke blue if it has a 2016 ballot issue
+            // .style("stroke", function(d, i) {
+            //     var ballotKey = dataById[d.properties.name].ballotkey;
+            //     if (ballotKey != 'No') {
+            //         d3.select(this.parentNode.appendChild(this))
+            //         return ('#2c7fb8')
+            //     } else {
+            //         return '#F5F5F5';
+            //     }
+            // })
+            // ... and give it a wider stroke
+            // .style('stroke-width', function(d, i) {
+            //     var ballotKey = dataById[d.properties.name].ballotkey;
+            //     if (ballotKey != 'No') {
+            //         d3.select(this.parentNode.appendChild(this))
+            //         return '2.5';
+            //     } else {
+            //         return '0.6';
+            //     }
+            // })
+            .style('cursor', 'default')
+            // Fill state based on status value
+            .style('fill', function(d) {
+                // Get data value
+                //var value = dataById[d.properties.uniqid].pct_change_1974_to_2012;
+                var value = dataById[d.properties.uniqid]._2012;
+                if (value) {
+                    //If value exists…
+                    return color(value);
+                } else {
+                    //If value is undefined…
+                    return '#bdbdbd';
+                }
+            })
+            // When the mouse moves over a feature, show the tooltip.
+            .on('mousemove', showTooltip)
+            // When the mouse moves out of a feature, hide the tooltip.
+            .on('mouseout', hideTooltip)
+            // When a feature is clicked, show the details of it.
+            .on('click', showDetails)
+        //updateMapColors();
+    });
+
+
+});
+}
+
 
 /**
  * Show the details of a feature in the details <div> container.
@@ -200,14 +342,14 @@ function showTooltip(f) {
     // Calculate the absolute left and top offsets of the tooltip. If the
     // mouse is close to the right border of the map, show the tooltip on
     // the left.
-    var left = Math.min(width - 4 * d.city.length, mouse[0] - 50);
+    var left = Math.min(width - 4 * d.NAME10.length, mouse[0] - 50);
     var top = mouse[1] + 100;
 
     // Show the tooltip (unhide it) and set the name of the data entry.
     // Set the position as calculated before.
     tooltip.classed('hidden', false)
         .attr("style", "left:" + left + "px; top:" + top + "px")
-        .html(d.city);
+        .html(d.NAME10);
 }
 
 /**
