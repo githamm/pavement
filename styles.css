@@ -1,6 +1,11 @@
 body {
     margin: 25px;
     background-color: #ddd;
+    font-family: 'Libre Franklin', sans-serif;
+}
+
+h3 {
+    font-family: 'Libre Franklin', sans-serif;
 }
 
 .tooltip {
@@ -32,6 +37,7 @@ table {
 td,
 th {
     padding: 2px 9px;
+    border-bottom: 1px solid #ccc;
 }
 
 .container {
@@ -52,7 +58,7 @@ p.legend-mobile {
     border-top: 1px solid silver;
     color: #888888;
     font-size: 1.25rem;
-    text-align: center;
+    text-align: right;
     margin-top: 1rem;
     padding: 0.5rem;
 }

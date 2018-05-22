@@ -8,15 +8,35 @@
     <!-- Thanks to this great tutorial: http://data-map-d3.readthedocs.io/en/latest/index.html -->
     <link href="//cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" rel="stylesheet" type="text/css">
     <link href="styles.css" rel="stylesheet" type="text/css">
-    <script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
-  <script>
-window.onload = function() {
-  pavedPct();
-};
-  </script>
+    <link href="https://fonts.googleapis.com/css?family=Libre+Franklin" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script>
+    window.onload = function() {
+        pavedPct();
+    };
+
+    function showMap() {
+        var mapOne = document.getElementById("map-container-1");
+        var mapTwo = document.getElementById("map-container-2");
+
+        mapOne.style.display = (
+            mapOne.style.display == "none" ? "block" : "none");
+        mapTwo.style.display = (
+            mapTwo.style.display == "none" ? "block" : "none");
+    }
+    </script>
+    <style>
+    button {
+        margin-top: 1rem;
+    }
+    .map-title {
+        border: 1px solid #bbb;
+        padding: 5px;
+        text-align: center;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+    </style>
 </head>
 
 <body>
@@ -24,46 +44,38 @@ window.onload = function() {
         <div class="row">
             <h1 class="twleve columns" id="map-title">The Paving of America</h1>
         </div>
-        <!-- <div class="row" id="legend-container">
-            <p style="text-align: center"><span style="border-top: 5px solid rgb(49, 163, 84); margin-right: 10px; font-size: 13px;">Recreational marijuana states</span>
-                <span style="border-top: 5px solid rgb(161, 217, 155); margin-right: 10px; font-size: 13px;">Medical marijuana states</span>
-                <span style="border-top: 5px solid #bdbdbd; margin-right: 10px; font-size: 13px;">Marijuana prohibition states</span>
-            </p>
+        <div id="map-container-1">
+            <div class="row" id="map"></div>
+            <div class="row map-title">Percentage change in a municipality's paved area between 1974 and 2012</div>
         </div>
-        <div class="row" id="legend-container-mobile">
-            <p class="legend-mobile"><span style="border-top: 5px solid rgb(49, 163, 84); ">Recreational marijuana states</span></p>
-            <p class="legend-mobile"><span style="border-top: 5px solid rgb(161, 217, 155); ">Medical marijuana states</span></p>
-            <p class="legend-mobile"><span style="border-top: 5px solid #bdbdbd; ">Marijuana prohibition states</span></p>
-        </div> -->
-        <div class="row" id="map"></div>
-        <div class="row" id="map-2"></div>
-        <!-- <div id="option">
-            <input name="change-button" type="button" value="Update" onclick="pavedPct();$('#map').replaceWith($('#map-2').html());" />
-        </div> -->
+        <div id="map-container-2" style="display:none">
+            <div class="row" id="map-2"></div>
+            <div class="row map-title">Square miles of a municipality's area that were paved in 2012</div>
+        </div>
+        <button onclick="showMap()">Toggle maps</button>
         <div id="details" class="hidden row"></div>
         <div class="row" id="initial">
-            <div class="five columns">
-                <p>The interactive map includes information on when states adopted regulations, whether legalization measures were voter-approved or enacted via legislation, CBD-only laws, as well as whether possession of small amounts of marijuana has been decriminalized, meaning a citation instead of possible jail time or criminal record for a first-time offense.</p>
-                <p style="text-align: center; font-style: italic">Updated Nov. 23, 2016</p>
+            <div class="twelve columns">
+                <p>The map shows the footprint of more than 3,500 municipalities in the United States. There are two different views: The first colors the municipalities based on the change in area that has been paved between 1974 and 2012; the second is colored by the percentage of the municipality's area that is pavement. Use the button to toggle between the maps. <em>Hover over a municipality to see its name; click it to see the data. Use mouse/fingers to "grab" and zoom map.</em></p>
             </div>
-            <div class="seven columns">
+           <!--  <div class="seven columns">
                 <h5 style="text-align: center;">Instructions</h5>
                 <ul>
                     <li>Click a state for details about its marijuana laws</li>
                     <li>Double-click to zoom in on small areas, such as Washington, DC; shift + double-click to zoom out. "Grab" map to move it.</li>
                 </ul>
-            </div>
+            </div> -->
         </div>
         <div class="row footer">
-            <strong>Data sources</strong>: National Conference of State Legislatures, National Organization for the Reform of Marijuana Laws
+            <strong>Data source</strong>: <a href="https://www.sciencebase.gov/catalog/item/58701618e4b01a71ba0c5fe6">U.S. Geological Survey</a>
         </div>
     </div>
     <!-- Mustache template, rendered later to show the details of a feature -->
     <script id="template" type="x-tmpl-mustache">
-        <h3 class="five columns state-name">{{ NAME10 }}</h3>
-        <table class="six columns">
+        <h3 class="six columns state-name">{{ NAME10 }}</h3>
+        <table class="four columns">
             <tr>
-                <th>Pct. change 1974-2012:</th>
+                <th>Change 1974-2012:</th>
                 <td>{{ pct_change_1974_to_2012 }}% </td>
             </tr>
             <tr>
